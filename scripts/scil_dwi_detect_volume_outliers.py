@@ -44,7 +44,7 @@ def _build_arg_parser():
                    help='The b-values files in FSL format (.bval).')
     p.add_argument('in_bvec',
                    help='The b-vectors files in FSL format (.bvec).')
-    
+
     p.add_argument('--mask',
                    help='Optional mask file to exclude background '
                         'from correlation computation.')
@@ -53,8 +53,6 @@ def _build_arg_parser():
                         'considered an outlier. [%(default)s]')
     p.add_argument('--out_file', type=str,
                    help='Optional output file (json) to dump the results.')
-
-
 
     add_b0_thresh_arg(p)
     add_skip_b0_check_arg(p, will_overwrite_with_min=True)
@@ -91,8 +89,9 @@ def main():
 
     # If output_file not provided, not using the result.
     # Only printing on screen.
-    results_dict, outliers_dict = detect_volume_outliers(data, bvals, bvecs, args.std_scale,
-                                    args.b0_threshold)
+    results_dict, outliers_dict = detect_volume_outliers(data, bvals, bvecs,
+                                                         args.std_scale,
+                                                         args.b0_threshold)
     for key in results_dict:
         if isinstance(results_dict[key], np.ndarray):
             results_dict[key] = results_dict[key].tolist()
@@ -115,7 +114,9 @@ def main():
 
     if args.out_file:
         with open(args.out_file, "w") as f:
-            json.dump(json_output, f, indent=args.indent, sort_keys=args.sort_keys)
+            json.dump(json_output, f, indent=args.indent,
+                      sort_keys=args.sort_keys)
+
 
 if __name__ == "__main__":
     main()
